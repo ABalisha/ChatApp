@@ -4,6 +4,7 @@ const server = require('http').createServer(app)
 const socketio = require('socket.io')
 const path = require('path')
 const io = socketio(server)
+require('dotenv')
 app.use(express.static(path.join(__dirname, 'views')))
 io.on('connection',(socket)=>{
 console.log("Socket Connected")
@@ -22,4 +23,4 @@ socket.on('chatMessage',(message)=>{
 })
 })
 
-server.listen(3000, ()=>{console.log("App Running")})
+server.listen(process.env.PORT || 8888, ()=>{console.log("App Running")})
