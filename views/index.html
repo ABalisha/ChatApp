@@ -1,20 +1,42 @@
 <html>
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js" integrity="sha512-Y5MDU6RaF5h5HE5BgqJlKkV12kbkbIgWHutcT+XHHNOUzr+HHjWZGC02sqEguuPglmFms3cc08WH2PhQ5rF8Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <head>
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js" integrity="sha512-Y5MDU6RaF5h5HE5BgqJlKkV12kbkbIgWHutcT+XHHNOUzr+HHjWZGC02sqEguuPglmFms3cc08WH2PhQ5rF8Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+
+<body>
+    <table>
+    <input id="message" type="text" value=""><br>
+    <input id="roomID" type="text" value=""><br>
+    <form> 
+    <input id="roomname" type="text" value=''>
+    <input type="button" onclick="joinroom()" value="Join Room">
+    <p></p>
+    </form>
+    <input type = "button" onclick="onsend1()" value = "send"> 
+    <p id="outermessage"></p>
+</table>
+</body>
 <script>
     const socket = io()
-    socket.on('message',message =>{
-        document.getElementById('message').innerHTML = message
+    function joinroom(){
+        const roomname = document.getElementById('roomname').value
+        socket.emit('join-room',roomname)
+    }
+    function onsend1(){
+        const message = document.getElementById('message').value
+        console.log(message)
+        const roomid = document.getElementById('roomID').value
+    socket.emit('messageFront',message,roomid)
+    }
+    socket.on('response',message=>{
+        document.getElementById('outermessage').innerHTML = message
+        document.getElementById('message').innerHTML = '';
     })
-    const chatform1 = document.getElementById('chatform')
-function emit1(){
-    const msg1 = document.getElementById('msg').value
-    socket.emit('chatMessage',msg1)
-}
-    </script>
-</head>
-<input type="text" id="msg" value="message">
-<button onclick="emit1()"> Send</button>
-<p id="message"></p>
-
+    
+    socket.on('message',message=>{
+        console.log(message)
+    })
+    
+</script>
 </html>
