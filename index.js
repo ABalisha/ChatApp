@@ -26,6 +26,8 @@ app.get('/index.html',(req,res)=>{
 
     })
 })
-
+app.get('*',(req,res)=>{
+    res.send('Wrong page fella')
+})
 
 server.listen(process.env.PORT || 8888,()=>{console.log("App running on port 8888")})
