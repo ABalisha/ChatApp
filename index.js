@@ -4,7 +4,7 @@ const server = require('http').createServer(app)
 const socketio = require('socket.io')
 const path = require('path')
 const io = socketio(server)
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); // Engine
 app.get('/index.html',(req,res)=>{
     res.sendFile(__dirname + '/views/index.html')
     io.on('connection', socket=>
