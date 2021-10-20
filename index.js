@@ -5,8 +5,7 @@ const socketio = require('socket.io')
 const path = require('path')
 const io = socketio(server)
 app.set("view engine", "ejs"); // Engine
-app.get('/index.html',(req,res)=>{
-    res.sendFile(__dirname + '/views/index.html')
+app.get('/index',(req,res)=>{
     io.on('connection', socket=>
     {
         console.log(socket.id)
@@ -26,6 +25,7 @@ app.get('/index.html',(req,res)=>{
         io.emit("message","A new user has been connected ")
 
     })
+    res.render('index')
 })
 app.get("/room/:roomName", (req, res) => {
   const param = req.params.roomName;
