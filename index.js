@@ -26,6 +26,19 @@ app.get('/index.html',(req,res)=>{
 
     })
 })
+app.get("/room/:roomName", (req, res) => {
+  const param = req.params.roomName;
+  io.on("connection", (socket) => {
+    socket.join(param);
+    console.log(socket.rooms)
+    socket.on('sendMessage',(message) =>{
+        console.log(socket)
+
+        io.to(param).emit('SendMessage1',message)
+    })
+  });
+  res.render("room", { param: param });
+});
 app.get('*',(req,res)=>{
     res.send('Wrong page fella')
 })
