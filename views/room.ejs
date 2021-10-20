@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"
+      integrity="sha512-Y5MDU6RaF5h5HE5BgqJlKkV12kbkbIgWHutcT+XHHNOUzr+HHjWZGC02sqEguuPglmFms3cc08WH2PhQ5rF8Cw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      const socket = io()
+      function onsend1(){
+        let message1 = document.getElementById('message').value
+        console.log(message1)
+        socket.emit('sendMessage',message1)
+        socket.on('SendMessage1',(message)=>{
+          console.log('Frontend'+message)
+          document.getElementById('outermessage').innerHTML = message
+        })
+      
+      }
+
+    </script>
+
+  </head>
+
+  <body>
+    <table>
+      <p>Room Name: <%= param %></p>
+      <label for ="Message">Message</label><br>
+      <input id="message" type="text" value="" /><br />
+      <input type="button" onclick="onsend1()" value="send" />
+      <p id="outermessage"></p>
+    </table>
+  </body>
