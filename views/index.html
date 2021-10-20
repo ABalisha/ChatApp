@@ -1,42 +1,58 @@
 <html>
-    <head>
-        
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js" integrity="sha512-Y5MDU6RaF5h5HE5BgqJlKkV12kbkbIgWHutcT+XHHNOUzr+HHjWZGC02sqEguuPglmFms3cc08WH2PhQ5rF8Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    </head>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"
+      integrity="sha512-Y5MDU6RaF5h5HE5BgqJlKkV12kbkbIgWHutcT+XHHNOUzr+HHjWZGC02sqEguuPglmFms3cc08WH2PhQ5rF8Cw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
 
-<body>
+  <body>
     <table>
-    <input id="message" type="text" value=""><br>
-    <input id="roomID" type="text" value=""><br>
-    <form> 
-    <input id="roomname" type="text" value=''>
-    <input type="button" onclick="joinroom()" value="Join Room">
-    <p></p>
-    </form>
-    <input type = "button" onclick="onsend1()" value = "send"> 
-    <p id="outermessage"></p>
-</table>
-</body>
-<script>
-    const socket = io()
-    function joinroom(){
-        const roomname = document.getElementById('roomname').value
-        socket.emit('join-room',roomname)
+      <input id="message" type="text" value="" /><br />
+      <input id="roomID" type="text" value="" /><br />
+      <form>
+        <input id="roomname" type="text" value="" />
+        <a id="link"><input type="button" onclick="joinroom()" value="Join Room" /></a>
+        <p></p>
+      </form>
+      <input type="button" onclick="onsend1()" value="send" />
+      <p id="outermessage"></p>
+      <p id="group1message"></p>
+    </table>
+  </body>
+  <script>
+    const socket = io();
+    function joinroom() {
+        const roomname = document.getElementById("roomname").value;
+var a = document.getElementById('link');
+
+a.href ="room/" + roomname
+      
+      socket.emit("join-room", roomname);
     }
-    function onsend1(){
-        const message = document.getElementById('message').value
-        console.log(message)
-        const roomid = document.getElementById('roomID').value
-    socket.emit('messageFront',message,roomid)
+    socket.on("groupmessage", (message) => {
+      document.getElementById("group1message").innerHTML = message;
+    });
+    const groupmessage = document.getElementById("group1message").value;
+    socket.emit("groupmessage", groupmessage, roomname);
+    socket.on('groupmessage',(message)=>{
+        document.getElementById("group1message").innerHTML = message
+    })
+    function onsend1() {
+      const message = document.getElementById("message").value;
+      console.log(message);
+      const roomid = document.getElementById("roomID").value;
+      socket.emit("messageFront", message, roomid);
     }
-    socket.on('response',message=>{
-        document.getElementById('outermessage').innerHTML = message
-        document.getElementById('message').innerHTML = '';
-    })
-    
-    socket.on('message',message=>{
-        console.log(message)
-    })
-    
-</script>
+    socket.on("response", (message) => {
+      document.getElementById("outermessage").innerHTML = message;
+      document.getElementById("message").innerHTML = "";
+    });
+
+    socket.on("message", (message) => {
+      console.log(message);
+    });
+  </script>
 </html>
